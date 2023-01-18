@@ -1,4 +1,5 @@
 import ImageGenerator from "containers/ImageGenerator";
+import Auth from "containers/Auth";
 import CssBaseline from "@mui/material/CssBaseline";
 
 function App() {
@@ -6,6 +7,7 @@ function App() {
     <div className="App">
       <CssBaseline />
       <ImageGenerator />
+      <Auth />
     </div>
   );
 }

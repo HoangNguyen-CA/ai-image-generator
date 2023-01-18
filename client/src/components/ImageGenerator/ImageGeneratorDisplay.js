@@ -1,4 +1,4 @@
-import { Box, Skeleton, Alert, AlertTitle } from "@mui/material";
+import { Box, Skeleton, Alert, AlertTitle, Button } from "@mui/material";
 
 function ImageGeneratorDisplay({ loading, isError, error, data, success }) {
   let content = null;
@@ -15,26 +15,31 @@ function ImageGeneratorDisplay({ loading, isError, error, data, success }) {
     );
   } else if (success) {
     content = (
-      <Box
-        component="img"
-        sx={{
-          display: "block",
-          width: "100%",
-          height: "100%",
-          maxWidth: 512,
-          maxHeight: 512,
-        }}
-        alt="AI generated image"
-        src={data.imageURL}
-      />
+      <>
+        <Box
+          component="img"
+          sx={{
+            display: "block",
+            width: "100%",
+            height: "100%",
+            maxWidth: 512,
+            maxHeight: 512,
+          }}
+          alt="AI generated image"
+          src={data.imageURL}
+        />
+        <Button variant="contained">Download Image</Button>
+      </>
     );
   }
+
+  if (content === null) return null;
 
   return (
     <Box
       sx={{
         display: "flex",
-        flexDirection: "row",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         p: 3,

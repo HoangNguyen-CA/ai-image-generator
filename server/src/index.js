@@ -13,6 +13,7 @@ app.use(express.json());
 app.use(morgan("tiny"));
 
 app.use("/openai", require("./routes/openai/openai.router"));
+app.use("/user", require("./routes/user/user.router"));
 
 app.use((err, req, res, next) => {
   errorHandler.handleError(err, res);

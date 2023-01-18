@@ -5,8 +5,10 @@ class ErrorHandler {
       responseStream
         .status(error.status || 500)
         .json({ error: error.message || "unspecified error" });
-    } else {
-      process.exit(1);
+    } else if (error.status < 500 && error.status >= 400) {
+      responseStream.status(error.status).json({
+        error: error.error.message,
+      });
     }
   }
 }
