@@ -7,7 +7,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 async function httpCreateImage(req, res) {
-  const { prompt, size } = req.body;
+  const { prompt, size } = req.query;
   if (prompt === undefined)
     throw new AppError(400, "Empty prompt in request body");
 
@@ -26,8 +26,7 @@ async function httpCreateImage(req, res) {
     });
     const imageUrl = apiResponse.data.data[0].url;
     res.status(200).json({
-      success: true,
-      data: imageUrl,
+      imageURL: imageUrl,
     });
   } catch (openaiError) {
     if (openaiError.response) {
