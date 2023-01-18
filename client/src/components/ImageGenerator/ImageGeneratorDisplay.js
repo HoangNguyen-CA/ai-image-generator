@@ -1,31 +1,48 @@
-import { Box } from "@mui/material";
+import { Box, Skeleton, Alert, AlertTitle } from "@mui/material";
 
-function ImageGeneratorDisplay({ loading, error, data }) {
+function ImageGeneratorDisplay({ loading, isError, error, data, success }) {
+  let content = null;
   if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (data?.imageURL) {
-    return (
+    content = (
+      <Skeleton variant="rectangular" width={512} height={512}></Skeleton>
+    );
+  } else if (isError) {
+    content = (
+      <Alert severity="error">
+        <AlertTitle>Error</AlertTitle>
+        {error?.response?.data?.error || "Could not generate image."}
+      </Alert>
+    );
+  } else if (success) {
+    content = (
       <Box
         component="img"
         sx={{
-          height: 233,
-          width: 350,
-          maxHeight: { xs: 233, md: 167 },
-          maxWidth: { xs: 350, md: 250 },
+          display: "block",
+          width: "100%",
+          height: "100%",
+          maxWidth: 512,
+          maxHeight: 512,
         }}
         alt="AI generated image"
         src={data.imageURL}
       />
     );
-  } else {
-    return null;
   }
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        p: 3,
+      }}
+    >
+      {content}
+    </Box>
+  );
 }
 
 export default ImageGeneratorDisplay;

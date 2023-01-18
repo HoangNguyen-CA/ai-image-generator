@@ -22,9 +22,9 @@ function ImageGeneratorForm({ onSubmit }) {
           sx={{ mb: 2 }}
           {...register("size")}
         >
-          <MenuItem value={"small"}>Small</MenuItem>
-          <MenuItem value={"medium"}>Medium</MenuItem>
-          <MenuItem value={"large"}>Large</MenuItem>
+          <MenuItem value={"small"}>Small (256x256)</MenuItem>
+          <MenuItem value={"medium"}>Medium (512x512)</MenuItem>
+          <MenuItem value={"large"}>Large (1024x1024)</MenuItem>
         </TextField>
         <Button variant="contained" type="submit">
           Generate Image

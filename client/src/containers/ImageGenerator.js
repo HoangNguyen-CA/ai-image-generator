@@ -1,36 +1,32 @@
-import { Paper } from "@mui/material";
+import { Container, Paper } from "@mui/material";
 import { createImage } from "services/openai";
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import ImageGeneratorDisplay from "components/ImageGenerator/ImageGeneratorDisplay";
 import ImageGeneratorForm from "components/ImageGenerator/ImageGeneratorForm";
 
 function ImageGenerator() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [data, setData] = useState(null);
+  const { mutate, isLoading, isError, error, isSuccess, data } = useMutation({
+    mutationFn: createImage,
+  });
 
-  const handleSubmit = async (data) => {
-    try {
-      setLoading(true);
-      const res = await createImage(data.prompt, data.size);
-      setData(res);
-    } catch (e) {
-      if (e.response?.data?.error) {
-        setError(e.response.data.error);
-      } else {
-        throw e;
-      }
-    } finally {
-      setLoading(false);
-    }
+  const handleSubmit = async (formData) => {
+    mutate(formData);
   };
 
   return (
-    <Paper elevation={2} sx={{ m: 2 }}>
-      <ImageGeneratorForm onSubmit={handleSubmit} />
+    <Container maxWidth="md">
+      <Paper elevation={2} sx={{ m: 2 }}>
+        <ImageGeneratorForm onSubmit={handleSubmit} />
 
-      <ImageGeneratorDisplay loading={loading} data={data} error={error} />
-    </Paper>
+        <ImageGeneratorDisplay
+          loading={isLoading}
+          success={isSuccess}
+          data={data}
+          isError={isError}
+          error={error}
+        />
+      </Paper>
+    </Container>
   );
 }
 
