@@ -15,7 +15,7 @@ const Profile = () => {
 
       const metadataResponse = await fetch(userDetailsByIdUrl, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          // Authorization: `Bearer ${accessToken}`,
         },
       });
 
