@@ -1,6 +1,8 @@
-const s3 = require("./S3");
+const AWS = require("aws-sdk");
 const uuid = require("uuid");
 const AppError = require("../errorHandling/AppError");
+
+const s3 = new AWS.S3();
 
 async function S3Upload(imageURL) {
   try {

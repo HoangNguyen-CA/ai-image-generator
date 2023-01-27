@@ -17,7 +17,7 @@ async function getUserWithAuthId(authId) {
     user = res.rows[0];
   }
   if (user === null) {
-    user = await registerUser(authID);
+    user = await registerUser(authId);
   }
   if (user === null) {
     throw new AppError(500, "User is null after registration.", false);

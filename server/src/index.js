@@ -18,6 +18,8 @@ app.use("/user", require("./routes/user/user.router"));
 
 app.use((err, req, res, next) => {
   if (err?.status == 401) {
+    console.log(err);
+
     next(new AppError(401, "User not authorized."));
   } else {
     next(err);

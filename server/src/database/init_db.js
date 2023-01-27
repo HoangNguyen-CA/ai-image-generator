@@ -6,7 +6,7 @@ const sql = fs.readFileSync(path.join(__dirname, "init.sql")).toString();
 
 async function init() {
   await query(sql);
-  console.log("DONE");
+  console.log("SQL INIT DONE");
 }
 
 init();

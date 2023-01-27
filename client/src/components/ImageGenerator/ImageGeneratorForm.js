@@ -6,7 +6,7 @@ function ImageGeneratorForm({ onSubmit }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Box sx={{ display: "flex", flexDirection: "column", p: 3 }}>
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
         <TextField
           label="Text Prompt"
           variant="outlined"

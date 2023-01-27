@@ -1,32 +1,61 @@
-import { Container, Paper } from "@mui/material";
-import { createImage } from "services/openai";
+import { useState } from "react";
+import { Paper, Stack } from "@mui/material";
+import { createImage } from "services/openai.service";
 import { useMutation } from "@tanstack/react-query";
+import { useOutletContext } from "react-router-dom";
 import ImageGeneratorDisplay from "components/ImageGenerator/ImageGeneratorDisplay";
 import ImageGeneratorForm from "components/ImageGenerator/ImageGeneratorForm";
+import ImageGeneratorControls from "components/ImageGenerator/ImageGeneratorControls";
+
+import { postUserImage } from "services/user.service";
 
 function ImageGenerator() {
-  const { mutate, isLoading, isError, error, isSuccess, data } = useMutation({
+  const [savedDisabled, setSaveDisabled] = useState(false);
+
+  const mutateCreateImage = useMutation({
     mutationFn: createImage,
+    onSuccess: () => {
+      setSaveDisabled(false);
+    },
   });
 
+  const mutatePostUserImage = useMutation({
+    mutationFn: postUserImage,
+    onMutate: () => {
+      setSaveDisabled(true);
+    },
+    onError: () => {
+      setSaveDisabled(false);
+    },
+  });
+
+  const { accessToken } = useOutletContext();
+
   const handleSubmit = async (formData) => {
-    mutate(formData);
+    mutateCreateImage.mutate(formData);
   };
 
   return (
-    <Container maxWidth="md">
-      <Paper elevation={2} sx={{ m: 2 }}>
+    <Paper elevation={2} sx={{ p: 4 }}>
+      <Stack spacing={3}>
         <ImageGeneratorForm onSubmit={handleSubmit} />
 
+        <ImageGeneratorControls
+          imageURL={mutateCreateImage.data?.imageURL}
+          accessToken={accessToken}
+          mutatePostUserImage={mutatePostUserImage}
+          savedDisabled={savedDisabled}
+        ></ImageGeneratorControls>
+
         <ImageGeneratorDisplay
-          loading={isLoading}
-          success={isSuccess}
-          data={data}
-          isError={isError}
-          error={error}
+          loading={mutateCreateImage.isLoading}
+          success={mutateCreateImage.isSuccess}
+          data={mutateCreateImage.data}
+          isError={mutateCreateImage.isError}
+          error={mutateCreateImage.error}
         />
-      </Paper>
-    </Container>
+      </Stack>
+    </Paper>
   );
 }
 

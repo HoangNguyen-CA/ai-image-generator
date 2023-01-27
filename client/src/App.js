@@ -1,14 +1,26 @@
 import ImageGenerator from "containers/ImageGenerator";
-import Auth from "containers/Auth";
+import User from "containers/User";
 import CssBaseline from "@mui/material/CssBaseline";
+import { Routes, Route } from "react-router-dom";
+import Layout from "components/Layout";
+import RequireAuth from "components/RequireAuth";
+import Profile from "containers/Profile";
 
 function App() {
   return (
-    <div className="App">
+    <>
       <CssBaseline />
-      <ImageGenerator />
-      <Auth />
-    </div>
+
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<ImageGenerator />} />
+          <Route element={<RequireAuth />}>
+            <Route path="/saved" element={<User />} />
+            <Route path="/profile" element={<Profile />} />
+          </Route>
+        </Route>
+      </Routes>
+    </>
   );
 }
 

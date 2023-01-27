@@ -1,11 +1,11 @@
 const { query } = require("../services/postgres");
 const { getUserWithAuthId } = require("./users.model");
-const AppError = require("../errorHandling/AppError");
+// const AppError = require("../errorHandling/AppError");
 
 async function postUserImage(authId, imageURL) {
-  const user = getUserWithAuthID(authId);
+  const user = await getUserWithAuthId(authId);
 
-  const res = query(
+  const res = await query(
     "INSERT INTO images (image_url, user_id) VALUES ($1, $2) RETURNING *",
     [imageURL, user.user_id]
   );
@@ -14,7 +14,7 @@ async function postUserImage(authId, imageURL) {
 }
 
 async function getUserImages(authId) {
-  const user = getUserWithAuthID(authId);
+  const user = await getUserWithAuthId(authId);
 
   const res = await query("SELECT * FROM images WHERE user_id = $1", [
     user.user_id,
