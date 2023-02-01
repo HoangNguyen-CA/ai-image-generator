@@ -1,6 +1,14 @@
 import { Box, Skeleton, Alert, AlertTitle } from "@mui/material";
+import ImageFrame from "components/ImageFrame";
 
-function ImageGeneratorDisplay({ loading, isError, error, data, success }) {
+function ImageGeneratorDisplay({
+  loading,
+  isError,
+  error,
+  data,
+  success,
+  prompt,
+}) {
   let content = null;
   if (loading) {
     content = (
@@ -22,17 +30,9 @@ function ImageGeneratorDisplay({ loading, isError, error, data, success }) {
     );
   } else if (success) {
     content = (
-      <Box
-        component="img"
-        sx={{
-          display: "block",
-          width: "100%",
-          height: "auto",
-          maxWidth: 512,
-        }}
-        alt="AI generated image"
-        src={data.imageURL}
-      />
+      <Box sx={{ width: "80%", maxWidth: "512px" }}>
+        <ImageFrame imageURL={data.imageURL} prompt={prompt} />
+      </Box>
     );
   }
 

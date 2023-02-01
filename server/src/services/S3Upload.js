@@ -15,6 +15,7 @@ async function S3Upload(imageURL) {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: uuid.v4(),
         Body: blob,
+        ContentType: "image/jpeg",
       })
       .promise();
 

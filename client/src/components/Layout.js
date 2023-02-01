@@ -78,13 +78,13 @@ function Layout() {
   });
 
   const drawer = (
-    <Box>
+    <Box onClick={handleDrawerToggle}>
       <Toolbar />
       <Divider />
       <List>
         {accessToken
           ? authLinks.map(({ text, action, icon }) => (
-              <ListItem disablePadding>
+              <ListItem disablePadding key={text}>
                 <ListItemButton onClick={action}>
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText primary={text} />
@@ -92,7 +92,7 @@ function Layout() {
               </ListItem>
             ))
           : noAuthLinks.map(({ text, action, icon }) => (
-              <ListItem disablePadding>
+              <ListItem disablePadding key={text}>
                 <ListItemButton onClick={action}>
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText primary={text} />
@@ -153,7 +153,7 @@ function Layout() {
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
-          ModalProps={{ keepMounted: true }}
+          // ModalProps={{ keepMounted: true }}
           sx={{
             "& .MuiDrawer-paper": { width: drawerWidth },
             display: { xs: "block", md: "none" },

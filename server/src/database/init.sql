@@ -7,6 +7,7 @@ CREATE TABLE images (
     image_id SERIAL PRIMARY KEY,
     image_url TEXT NOT NULL,
     user_id INT NOT NULL,
+    prompt TEXT NOT NULL,
     CONSTRAINT fk_user
         FOREIGN KEY(user_id)
             REFERENCES users(user_id)

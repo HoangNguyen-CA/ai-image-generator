@@ -9,3 +9,5 @@ no clear guides to set up, auth0 service manages users themselves. I set up usin
 Proper IAM policy and a separate user for this app, can only perform necessary S3 operations
 
 docker exec -it ai-image-db-1 psql -U postgres
+
+TODO: Server input validation
