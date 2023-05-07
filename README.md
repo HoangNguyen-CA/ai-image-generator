@@ -6,46 +6,40 @@
 
 ## Deploying my NodeJS backend on AWS for free (almost)
 
-features:
-- custom domain name
-- nginx reverse proxy with SSL certificate
-- HTTPS supported
+- EC2 instance publically accessible using a custom domain name
+- EC2 uses Nginx internally as a reverse proxy
+- Nginx supports SSL certificate renewal (enables HTTPS)
 
-deploying on AWS was diffcult with my incomplete knowledge about networking topics, especially with trying to stay in the limits of the free tier. 
+Deploying on AWS was difficult with my incomplete knowledge of networking topics, especially with trying to stay within the limits of the free tier. 
 
-Here are the steps I took to deploy on AWS, I hope readers can learn from my experience and avoid the mistakes that I made.
+Here are the steps I took to deploy on AWS, and I hope readers can learn from my experience and avoid my mistakes.
 
 - I followed this concise [guide](https://gist.github.com/clodal/f19fc9f57e9c419f523164a145777d69), which is similar to what most sources will tell you to do.
   - The guide says to create an application load balancer to connect with Route53 (along with an ACM certificate for HTTPS support).
-  - Do NOT use a load balancer if you want to save money, ELB is listed in the [free tier](https://aws.amazon.com/free/), it only gives 15 LCUs for application load balancers, which will run out QUICK.
-  - For my first month of using application load balancer on 1 EC2 instance I was charged $50 😱😱😱 (refunded later with amazon support).
+  - Do NOT use a load balancer if you want to save money, ELB is listed in the [free tier](https://aws.amazon.com/free/), and it only gives 15 LCUs for application load balancers, which will run out QUICK.
+  - For my first month of using the application load balancer on 1 EC2 instance I was charged $50 😱😱😱 (refunded later with Amazon support).
   
-- Instead of using an AWS load balancer, use a NGINX reverse proxy instead.
-  - Install nginx on your server. 
-  - You can use [certbot](https://certbot.eff.org/) to automatically set up and renew your SSL certificate.
-  - Certbot automatically changes your nginx configuration, but does not set up the reverse proxy.
-  - Manually change Nginx config to route ports 80 and 443 to localhost.
+- Instead of using an AWS load balancer, I used an NGINX reverse proxy. A load balancer is not required for a small-scale personal project.
+  - Install Nginx on your EC2 instance. 
+  - You can use [certbot](https://certbot.eff.org/) to automatically set up and renew your SSL certificate. Certbot automatically changes your Nginx configuration but does not set up the reverse proxy.
+  - Manually change Nginx config to route ports 80 and 443 to localhost (reverse proxy).
   - In AWS Route53, create a type A record that points to your EC2's public IPv4 address.
-  - (Optional) setup and use elastic IP address instead of public IPv4 address since public addresses can change.
+  - (Optional) Setup and use an elastic IP address instead of a public IPv4 address since IP can change.
   
-- Hooking up RDS to EC2 is relatively simple, make sure you connect the RDS instance to the EC2 instance during RDS setup, or else EC2 will not be able to access the database.
+- Hooking up RDS to EC2 was relatively simple, you have to connect the RDS instance to the EC2 instance during RDS setup, or else EC2 will not be able to access the database.
 
-- Make sure S3 items are publically accessible so images can be rendered.
- 
- DONE, you can now access your EC2 instance from a public domain, using HTTPS. 
+- I made sure my images in my S3 bucket are publically accessible via URL so they can be stored and rendered easily.
  
 ### Monthly cost breakdown
 
- Runtime: ~730 hours in a month
- Resources used:
+ Runtime: ~730 hours in a month 
+
+ AWS resources used:
  - 1 t3.micro EC2 instance (free tier, ~$7.5).
  - 1 db.t3.micro	RDS instance (free tier, ~$13).
  - (OPTIONAL) RDS backup snapshots (~$0.10)
  - AWS Route53 (~$0.70)
  - S3 bucket (free tier).
  
- total cost per month (free tier): ~$0.70.
+ Total cost per month (free tier): ~$0.70.
  
- 
- 
-  
