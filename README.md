@@ -42,4 +42,15 @@ Here are the steps I took to deploy on AWS, and I hope readers can learn from my
  - S3 bucket (free tier).
  
  Total cost per month (free tier): ~$0.70.
+
+ ## Migrating away from AWS to DigitalOcean and supabase, adding rate-limiting for AI Image generation
+
+ My 12-month free tier with AWS expired so I decided to migrate away since monthly costs were too high.
+
+ Digital Ocean waas really easy to use, I used their app service, which functions similarly to heroku. It was painless to deploy my nodejs server from my github repository with a few clicks.
+
+ I used supabase for its PostgreSQL database and file storage since it has a generous free tier, I had to write a small script to use the supabase client for uploading images into buckets, but the database was an easy plug-in solution. 
+
+ Finally, I decided to add rate-liming to my image generation endpoint. Using the express-rate-limit library, I could see up rate limiting by IP using an in-memory data store (good since I only have 1 small backend server). This let me rate limit based on clients' IP addresses. 
+
  
